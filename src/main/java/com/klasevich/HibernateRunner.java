@@ -1,5 +1,6 @@
 package com.klasevich;
 
+import com.klasevich.entity.Birthday;
 import com.klasevich.entity.PersonalInfo;
 import com.klasevich.entity.User;
 import com.klasevich.util.HibernateUtil;
@@ -9,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 @Slf4j
 public class HibernateRunner {
@@ -19,6 +21,7 @@ public class HibernateRunner {
                 .personalInfo(PersonalInfo.builder()
                         .lastname("Petrov")
                         .firstname("Petr")
+                        .birthDate(new Birthday(LocalDate.of(2000, 1, 2)))
                         .build())
                 .build();
         log.info("User entity is in transient state, object: {}", user);
@@ -35,6 +38,16 @@ public class HibernateRunner {
                 session1.getTransaction().commit();
             }
             log.warn("User is in detached state: {}, session is closed {}", user, session1);
+
+            try (Session session = sessionFactory.openSession();) {
+                PersonalInfo key = PersonalInfo.builder()
+                        .lastname("Petrov")
+                        .firstname("Petr")
+                        .birthDate(new Birthday(LocalDate.of(2000, 1, 2)))
+                        .build();
+
+                User user1 = session.get(User.class, key);
+            }
         } catch (Exception exception) {
             log.error("Exception ocurred", exception);
             throw exception;
