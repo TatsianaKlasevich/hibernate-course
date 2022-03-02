@@ -2,19 +2,15 @@ package com.klasevich;
 
 import com.klasevich.entity.User;
 import com.klasevich.util.HibernateUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.persistence.Converter;
 import java.sql.SQLException;
 
-@Converter(autoApply = true)
+@Slf4j
 public class HibernateRunner {
-
-    private static final Logger log = LoggerFactory.getLogger(HibernateRunner.class);
 
     public static void main(String[] args) throws SQLException {
         User user = User.builder()
