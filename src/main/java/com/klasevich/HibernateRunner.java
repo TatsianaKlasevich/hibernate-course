@@ -1,57 +1,39 @@
 package com.klasevich;
 
-import com.klasevich.converter.BirthdayConverter;
-import com.klasevich.entity.Birthday;
-import com.klasevich.entity.Role;
 import com.klasevich.entity.User;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import com.klasevich.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
-import javax.persistence.Convert;
 import javax.persistence.Converter;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 @Converter(autoApply = true)
 public class HibernateRunner {
     public static void main(String[] args) throws SQLException {
-//        BlockingQueue<Connection>pool = null;
-//        Connection connection = pool.take();
-//        SessionFactory
+        User user = User.builder()
+                .username("ivan@gmail.com")
+                .lastname("Ivanov")
+                .firstname("Ivan")
+                .build();
 
-//        Connection connection = DriverManager
-//                .getConnection("db.url", "db.username", "db.password");
-//        Session
+        try (SessionFactory sessionFactory = HibernateUtil.buildSessionFactory()) {
+            try (Session session1 = sessionFactory.openSession()) {
+                session1.beginTransaction();
 
-        Configuration configuration = new Configuration();
-//        configuration.addAnnotatedClass(User.class);
-//        configuration.setPhysicalNamingStrategy(new CamelCaseToUnderscoresNamingStrategy());
-        configuration.addAttributeConverter(new BirthdayConverter());
-        configuration.registerTypeOverride(new JsonBinaryType());
-        configuration.configure();
+                session1.saveOrUpdate(user);
 
-        try (SessionFactory sessionFactory = configuration.buildSessionFactory();
-             Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
+                session1.getTransaction().commit();
+            }
+            try (Session session2 = sessionFactory.openSession()) {
+                session2.beginTransaction();
 
-            User user = User.builder()
-                    .username("ivan@gmail.com")
-                    .firstName("Ivan")
-                    .lastName("Ivanov")
-                    .info("""
-                            {
-                             "name":"Ivan",
-                             "id":25
-                            }
-                            """)
-                    .birthDate(new Birthday(LocalDate.of(2000, 1, 19)))
-                    .role(Role.ADMIN)
-                    .build();
-            session.save(user);
+                user.setFirstname("Sveta");
+                session2.merge(user);
+//                session2.refresh(user);
 
-            session.getTransaction().commit();
+                session2.getTransaction().commit();
+            }
         }
     }
 }
