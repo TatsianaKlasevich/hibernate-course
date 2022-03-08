@@ -4,6 +4,7 @@ import com.klasevich.entity.Company;
 import com.klasevich.entity.User;
 import com.klasevich.util.HibernateUtil;
 import lombok.Cleanup;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.Test;
@@ -19,10 +20,39 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.Set;
 
 import static java.util.stream.Collectors.joining;
 
 class HibernateRunnerTest {
+
+    @Test
+    void checkOrphanRemoval() {
+        try (SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
+             Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+
+            Company company = session.getReference(Company.class, 2);
+            company.getUsers().removeIf(user -> user.getId().equals(3L));
+
+            session.getTransaction().commit();
+        }
+    }
+
+    @Test
+    void checkLazyInitialization() {
+        Company company = null;
+        try (SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
+             Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+
+            company = session.getReference(Company.class, 1);
+
+            session.getTransaction().commit();
+        }
+        Set<User> users = company.getUsers();
+        System.out.println(users.size());
+    }
 
     @Test
     void deleteCompany() {
@@ -65,8 +95,9 @@ class HibernateRunnerTest {
         @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        session.get(Company.class, 1);
-        System.out.println(" ");
+        Company company = session.get(Company.class, 1);
+        Hibernate.initialize(company.getUsers());
+        System.out.println(company.getUsers());
 
         session.getTransaction().commit();
     }
