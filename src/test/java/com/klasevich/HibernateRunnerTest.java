@@ -3,6 +3,7 @@ package com.klasevich;
 import com.klasevich.entity.Chat;
 import com.klasevich.entity.Company;
 import com.klasevich.entity.User;
+import com.klasevich.entity.UserChat;
 import com.klasevich.util.HibernateUtil;
 import lombok.Cleanup;
 import org.hibernate.Hibernate;
@@ -34,14 +35,17 @@ class HibernateRunnerTest {
             session.beginTransaction();
 
             User user = session.get(User.class, 6L);
-            user.getChats().clear();
 
-            Chat chat = Chat.builder()
-                    .name("dmdev")
+            Chat chat = session.get(Chat.class, 1L);
+
+            UserChat userChat = UserChat.builder()
+                    .createdAt(null)
+                    .createdBy(user.getUsername())
                     .build();
+            userChat.setUser(user);
+            userChat.setChat(chat);
 
-            user.addChat(chat);
-            session.save(chat);
+            session.save(userChat);
 
             session.getTransaction().commit();
 
