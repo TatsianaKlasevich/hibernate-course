@@ -1,5 +1,6 @@
 package com.klasevich;
 
+import com.klasevich.entity.Chat;
 import com.klasevich.entity.Company;
 import com.klasevich.entity.User;
 import com.klasevich.util.HibernateUtil;
@@ -25,6 +26,27 @@ import java.util.Set;
 import static java.util.stream.Collectors.joining;
 
 class HibernateRunnerTest {
+
+    @Test
+    void checkManyToMany() {
+        try (SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
+             Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+
+            User user = session.get(User.class, 6L);
+            user.getChats().clear();
+
+            Chat chat = Chat.builder()
+                    .name("dmdev")
+                    .build();
+
+            user.addChat(chat);
+            session.save(chat);
+
+            session.getTransaction().commit();
+
+        }
+    }
 
     @Test
     void checkOneToOne() {
