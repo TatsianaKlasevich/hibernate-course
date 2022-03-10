@@ -18,6 +18,8 @@
         <mapping class="com.klasevich.entity.Profile"/>
         <mapping class="com.klasevich.entity.Chat"/>
         <mapping class="com.klasevich.entity.UserChat"/>
+        <mapping class="com.klasevich.entity.Programmer"/>
+        <mapping class="com.klasevich.entity.Manager"/>
     </session-factory>
 
 </hibernate-configuration>

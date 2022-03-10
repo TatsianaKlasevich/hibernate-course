@@ -5,6 +5,8 @@
 
 <hibernate-configuration>
     <session-factory>
+        <property name="connection.username">postgres</property>
+        <property name="connection.password">pass</property>
         <property name="connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
         <property name="show_sql">true</property>
@@ -16,6 +18,8 @@
         <mapping class="com.klasevich.entity.Profile"/>
         <mapping class="com.klasevich.entity.Chat"/>
         <mapping class="com.klasevich.entity.UserChat"/>
+        <mapping class="com.klasevich.entity.Programmer"/>
+        <mapping class="com.klasevich.entity.Manager"/>
     </session-factory>
 
 </hibernate-configuration>

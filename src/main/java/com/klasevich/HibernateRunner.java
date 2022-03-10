@@ -1,9 +1,6 @@
 package com.klasevich;
 
-import com.klasevich.entity.Birthday;
 import com.klasevich.entity.Company;
-import com.klasevich.entity.PersonalInfo;
-import com.klasevich.entity.User;
 import com.klasevich.util.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
@@ -11,7 +8,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 @Slf4j
 public class HibernateRunner {
@@ -21,15 +17,15 @@ public class HibernateRunner {
                 .name("Amazon")
                 .build();
 
-        User user = User.builder()
-                .username("ivan@gmail.com")
-                .personalInfo(PersonalInfo.builder()
-                        .lastname("Petrov")
-                        .firstname("Petr")
-                        .birthDate(new Birthday(LocalDate.of(2000, 1, 2)))
-                        .build())
-                .company(company)
-                .build();
+//        User user = User.builder()
+//                .username("ivan@gmail.com")
+//                .personalInfo(PersonalInfo.builder()
+//                        .lastname("Petrov")
+//                        .firstname("Petr")
+//                        .birthDate(new Birthday(LocalDate.of(2000, 1, 2)))
+//                        .build())
+//                .company(company)
+//                .build();
 
 
         try (SessionFactory sessionFactory = HibernateUtil.buildSessionFactory()) {
@@ -37,7 +33,7 @@ public class HibernateRunner {
             try (session1) {
                 Transaction transaction = session1.beginTransaction();
 
-                session1.save(user);
+//                session1.save(user);
 
 
                 session1.getTransaction().commit();
