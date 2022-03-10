@@ -57,7 +57,6 @@ class HibernateRunnerTest {
 
             session.getTransaction().commit();
         }
-
     }
 
     @Test
