@@ -38,7 +38,7 @@ import java.util.List;
 @Entity
 @Table(name = "users", schema = "public")
 @TypeDef(name = "klass", typeClass = JsonBinaryType.class)
-public class User implements Comparable<User> {
+public class User implements Comparable<User>, BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
