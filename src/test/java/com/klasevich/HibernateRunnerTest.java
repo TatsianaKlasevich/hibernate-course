@@ -4,6 +4,7 @@ import com.klasevich.entity.Chat;
 import com.klasevich.entity.Company;
 import com.klasevich.entity.User;
 import com.klasevich.entity.UserChat;
+import com.klasevich.util.HibernateTestUtil;
 import com.klasevich.util.HibernateUtil;
 import lombok.Cleanup;
 import org.hibernate.Hibernate;
@@ -29,7 +30,7 @@ class HibernateRunnerTest {
 
     @Test
     void checkH2() {
-        try (SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
+        try (SessionFactory sessionFactory = HibernateTestUtil.buildSessionFactory();
              Session session = sessionFactory.openSession()) {
             session.beginTransaction();
 
