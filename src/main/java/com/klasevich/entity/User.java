@@ -38,7 +38,7 @@ import java.util.List;
 @Entity
 @Table(name = "users", schema = "public")
 @TypeDef(name = "klass", typeClass = JsonBinaryType.class)
-public class User {
+public class User implements Comparable<User> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,4 +70,9 @@ public class User {
     @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<UserChat> userChats = new ArrayList<>();
+
+    @Override
+    public int compareTo(User o) {
+        return username.compareTo(o.username);
+    }
 }
