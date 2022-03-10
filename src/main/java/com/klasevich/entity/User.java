@@ -1,14 +1,11 @@
 package com.klasevich.entity;
 
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
@@ -37,7 +34,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "users", schema = "public")
-@TypeDef(name = "klass", typeClass = JsonBinaryType.class)
+//@TypeDef(name = "klass", typeClass = JsonBinaryType.class)
 public class User implements Comparable<User> {
 
     @Id
@@ -50,9 +47,9 @@ public class User implements Comparable<User> {
 
     @Column(unique = true)
     private String username;
-
-    @Type(type = "klass")
-    private String info;
+//
+//    @Type(type = "klass")
+//    private String info;
 
     @Enumerated(EnumType.STRING)
     private Role role;
