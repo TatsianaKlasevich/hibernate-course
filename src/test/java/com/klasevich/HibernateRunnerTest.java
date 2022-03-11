@@ -10,9 +10,11 @@ import com.klasevich.entity.UserChat;
 import com.klasevich.util.HibernateTestUtil;
 import com.klasevich.util.HibernateUtil;
 import lombok.Cleanup;
+import org.hibernate.FlushMode;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.jpa.QueryHints;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
@@ -34,17 +36,20 @@ class HibernateRunnerTest {
             //    HQL / JPQL
             //select * from users where u.firstname = 'Ivan'
             String name = "Ivan";
-            List<User> result = session.createQuery(
+            List<User> result = session.createNamedQuery(
 //                            "select u from User u where u. personalInfo.firstname = ?1",
-                            "select u from User u " +
-                                    "left join u.company c" +
-                                    " where u.personalInfo.firstname = :firstname and c.name = :companyName " +
-                                    "order by u.personalInfo.lastname desc",
-                            User.class)
+                            "findUserByName", User.class)
 //                    .setParameter(1, name)
                     .setParameter("firstname", name)
                     .setParameter("companyName", "Google")
+                    .setFlushMode(FlushMode.COMMIT)
+                    .setHint(QueryHints.HINT_FETCH_SIZE, "50")
                     .list();
+
+            int countRows = session.createQuery("update User u set u.role = 'ADMIN'")
+                    .executeUpdate();
+
+            session.createNativeQuery("select * from users where u.firstname = 'Ivan'", User.class);
 
             session.getTransaction().commit();
         }
