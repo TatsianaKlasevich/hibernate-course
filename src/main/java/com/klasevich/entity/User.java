@@ -39,7 +39,7 @@ import java.util.List;
 @Entity
 @Table(name = "users", schema = "public")
 @TypeDef(name = "klass", typeClass = JsonBinaryType.class)
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "type")
 public abstract class User implements Comparable<User>, BaseEntity<Long> {
 
