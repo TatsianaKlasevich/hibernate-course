@@ -66,25 +66,25 @@ class HibernateRunnerTest {
                     .build();
             session.save(google);
 
-            Programmer programmer = Programmer.builder()
-                    .username("ivan@gmail.com")
-                    .language(Language.JAVA)
-                    .company(google)
-                    .build();
-            session.save(programmer);
-
-            Manager manager = Manager.builder()
-                    .username("sveta@gmail.com")
-                    .projectName("Starter")
-                    .company(google)
-                    .build();
-            session.save(manager);
-            session.flush();
-
-            session.clear();
-            Programmer programmer1 = session.get(Programmer.class, 1L);
-            User manager1 = session.get(User.class, 2L);
-            System.out.println();
+//            Programmer programmer = Programmer.builder()
+//                    .username("ivan@gmail.com")
+////                    .language(Language.JAVA)
+//                    .company(google)
+//                    .build();
+//            session.save(programmer);
+//
+//            Manager manager = Manager.builder()
+//                    .username("sveta@gmail.com")
+////                    .projectName("Starter")
+//                    .company(google)
+//                    .build();
+//            session.save(manager);
+//            session.flush();
+//
+//            session.clear();
+//            Programmer programmer1 = session.get(Programmer.class, 1L);
+//            User manager1 = session.get(User.class, 2L);
+//            System.out.println();
 
             session.getTransaction().commit();
         }
