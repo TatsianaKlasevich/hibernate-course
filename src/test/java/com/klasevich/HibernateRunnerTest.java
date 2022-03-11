@@ -2,9 +2,6 @@ package com.klasevich;
 
 import com.klasevich.entity.Chat;
 import com.klasevich.entity.Company;
-import com.klasevich.entity.Language;
-import com.klasevich.entity.Manager;
-import com.klasevich.entity.Programmer;
 import com.klasevich.entity.User;
 import com.klasevich.entity.UserChat;
 import com.klasevich.util.HibernateTestUtil;
