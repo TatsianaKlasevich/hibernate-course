@@ -10,9 +10,9 @@ repositories {
     mavenCentral()
 }
 
-sourceSets{
-    main{
-        java{
+sourceSets {
+    main {
+        java {
             srcDirs += "$buildDir/generated/sources/annotatinoProcessor/java/main"
         }
     }
@@ -23,7 +23,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-configurations{
+configurations {
     querydsl.extendsFrom implementation, runtimeOnly, compileOnly
 }
 
@@ -50,12 +50,12 @@ dependencies {
     testImplementation 'org.testcontainers:postgresql:1.16.3'
 }
 
-querydsl{
-    jpa=true
-    querydslSourcesDir="$buildDir/generated/sources/annotatinoProcessor/java/main"
+querydsl {
+    jpa = true
+    querydslSourcesDir = "$buildDir/generated/sources/annotatinoProcessor/java/main"
 }
 
-compileQuerydsl{
+compileQuerydsl {
 //    enabled=false
     options.annotationProcessorPath = configurations.querydsl
 }
