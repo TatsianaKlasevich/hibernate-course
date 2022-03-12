@@ -1,8 +1,10 @@
 package com.klasevich.dao;
 
+import com.klasevich.dto.PaymentFilter;
 import com.klasevich.entity.Payment;
 import com.klasevich.entity.User;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQuery;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -115,7 +117,7 @@ public class UserDao {
     /**
      * Возвращает среднюю зарплату сотрудника с указанными именем и фамилией
      */
-    public Double findAveragePaymentAmountByFirstAndLastNames(Session session, String firstName, String lastName) {
+    public Double findAveragePaymentAmountByFirstAndLastNames(Session session, PaymentFilter filter) {
 ////        return session.createQuery("select avg(p.amount) from Payment p " +
 ////                        "join p.receiver u " +
 ////                        "where u.personalInfo.firstname = :firstName " +
@@ -123,13 +125,16 @@ public class UserDao {
 ////                .setParameter("firstName", firstName)
 ////                .setParameter("lastName", lastName)
 ////                .uniqueResult();
+        Predicate predicate = QPredicate.builder()
+                .add(filter.getFirstName(), user.personalInfo.firstname::eq)
+                .add(filter.getLastName(), user.personalInfo.lastname::eq)
+                .buildAnd();
 
         return new JPAQuery<Double>(session)
                 .select(payment.amount.avg())
                 .from(payment)
                 .join(payment.receiver, user)
-                .where(user.personalInfo.firstname.eq(firstName)
-                        .and(user.personalInfo.lastname.eq(lastName)))
+                .where(predicate)
                 .fetchOne();
     }
 
